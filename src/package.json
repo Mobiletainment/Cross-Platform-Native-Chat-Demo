@@ -1,4 +1,10 @@
 {
-  "name": "nw-demo",
-  "main": "index.html"
+  "name": "cross-platform-web-app",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "width": 800,
+    "height": 500,
+    "position": "mouse"
+  }
 }
