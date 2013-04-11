@@ -17,11 +17,13 @@ var app = {};
  */
 app.init = function() {
 
-  $('.create-server').click(function(e) {
+  $('.create-server').one('click', function(e) {
     server.start();  
+    client.join('localhost:8080');
   });
 
-  $('.join-server').click(function(e) {
+  $('.join-server').one('click', function(e) {
+    $(this).addClass('disabled');
     var $ipInput = $('<input>', {'class': 'input-serverip'})
     $ipInput.insertAfter('.join-server').focus();
 
