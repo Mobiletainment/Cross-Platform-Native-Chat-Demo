@@ -3,11 +3,23 @@
   <head>
     <title>Cross-Platform-Web-App</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- BEGIN: Underscore Template Definition. -->
+    <script type="text/template" class="template-chat">
+      <ul id="messages"></ul>
+      <form id="messager">
+          <input id="input" placeholder="type in your message" />
+      </form>
+    </script>
+    <!-- END: Underscore Template Definition. -->
   </head>
   <body>
+    <h1>MyChat</h1>
     <section id="content">
-      <h1>Cross-Platform-Web-App</h1>
+      <button type="button" class="join-server">Join Server</button>
+      <button type="button" class="create-server">Create Server</button>
     </section>
-    <script src="lib/index.js"></script>
+    <script src="lib/socket.io.js"></script>
+    <script src="lib/app.js"></script>
   </body>
 </html>

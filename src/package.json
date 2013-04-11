@@ -7,5 +7,11 @@
     "width": 800,
     "height": 500,
     "position": "mouse"
+  },
+  "dependencies": {
+    "async": "~0.2.7",
+    "underscore": "~1.4.4",
+    "socket.io": "~0.9.14",
+    "jquery-browserify": "~1.8.1"
   }
 }

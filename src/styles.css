@@ -1,0 +1,31 @@
+* { -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+button[type=button] {
+  width: 200px;
+  height: 60px;
+  display: block;
+  margin: 10px auto;
+  font-size: 20px;
+  border: solid 1px #E8E8E8;
+  background-color: #DCF4F3;
+  color: #96ADAC;
+}
+
+button[type=button]:hover {
+  color: #000;
+}
+
+button[type=button]:active {
+  border: solid 1px orange;
+}
+
+.input-serverip {
+  width: 300px;
+  height: 30px;
+  margin: 0 auto;
+  display: block;
+  border: solid 1px #96ADAC;
+  font-size: 15px;
+  padding: 0 5px;
+  font-family: 'courier';
+}
