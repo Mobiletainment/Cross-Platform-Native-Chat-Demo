@@ -43,6 +43,8 @@ server.start = function() {
 
     // Store a reference to the connection using a connection ID
     connection.id = connectionIDCounter++;
+    // Give connection a name
+    connection.name = 'guest';
     server.connections[connection.id] = connection;
 
     console.log((new Date()) + 'Server Connection ID ' + connection.id + ' accepted.');
@@ -50,7 +52,7 @@ server.start = function() {
     connection.on('message', function(message) {
       if(message.type === 'utf8') {
         console.log('Server Received Message: ' + message.utf8Data);
-        server.broadcast(message.utf8Data, connection.id);
+        server.broadcast(message.utf8Data);
       }
     });
 
@@ -66,23 +68,33 @@ server.start = function() {
 
 /**
  * Broadcast to all open connections
+ *
+ * Sends data objects in format of:
+ * {
+ *    msg: 'String',
+ *    name: 'String'
+ * }
  */
 server.broadcast = function(data, excludeID) {
   Object.keys(server.connections).forEach(function(key) {
     var connection = server.connections[key];
     if (connection.connected && connection.id != excludeID) {
-        connection.send(data);
+      var msg = {
+        msg: data,
+        name: connection.name
+      }
+        connection.send(JSON.stringify(msg));
     }
   });
 };
 
 /**
- * Send message to a coonnection by its connectionID
+ * Send message to a connection by its connectionID
  */
 server.sendToConnectionId = function(connectionID, data) {
   var connection = this.connections[connectionID];
   if (connection && connection.connected) {
-      connection.send(data);
+      connection.send(JSON.stringify(data));
   }
 };
 

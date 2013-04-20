@@ -1,4 +1,32 @@
+
+@font-face {
+	font-family: MozTT;
+	src: url('fonts/MozTT-Light.ttf');
+  font-weight: lighter;
+}
+@font-face {
+	font-family: MozTT;
+	src: url('fonts/MozTT-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+	font-family: MozTT;
+	src: url('fonts/MozTT-Medium.ttf');
+  font-weight: bold;
+}
+@font-face {
+	font-family: MozTT;
+	src: url('fonts/MozTT-Bold.ttf');
+  font-weight: bolder;
+}
+
+* {font-family: MozTT}
+
 * { -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+h1 {
+  font-weight: lighter;
+}
 
 button[type=button] {
   width: 200px;

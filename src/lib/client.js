@@ -33,9 +33,9 @@ client.join = function(serverIP, port) {
     console.log('Client Socket Status: ' + socket.readyState + '(open)');
   }; 
   
-  socket.onmessage = function(msg) {  
-    console.log('Client message received: ' + msg.data)
-    client.newMessage(msg.data, true);
+  socket.onmessage = function(msgEvent) {  
+    console.log('Client message received: ' + msgEvent.data)
+    client.newMessage(JSON.parse(msgEvent.data));
   }; 
 
   socket.onerror = function(error) {
@@ -62,7 +62,7 @@ client.buildIU = function() {
 
   $('.messenger input').on('keypress', function(e) {
     if(e.which == 13) {
-      client.newMessage($(this).val());
+      client.server.socket.send($(this).val());
       e.preventDefault();
     }
   });
@@ -70,15 +70,18 @@ client.buildIU = function() {
 
 /**
  * Client sends message to server
+ *
+ * Receives data object in format of:
+ * {
+ *    msg: 'String',
+ *    name: 'String'
+ * }
  */
-client.newMessage = function(msg, fromServer) {
-  var socket = this.server.socket;
-  if(!fromServer) {
-    socket.send(msg);
-  }
-
+client.newMessage = function(data) {
+  console.log(data);
   // add message to UI
-  var $msgItem = $('<li>', {'class': 'message', 'html': msg});
-  $('.messages').append($msgItem);
+  var $msgItem = $('<li>', {'class': 'message', 'html': data.msg});
+  var $nameItem = $('<span>', {'class': 'message-name', 'html': data.name});
+  $('.messages').append($msgItem.prepend($nameItem));
 };
 
