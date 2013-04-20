@@ -17,28 +17,28 @@ var app = {};
  */
 app.init = function() {
 
+  /*
+   * Start Server
+   */
   $('.create-server').one('click', function(e) {
     server.start();  
-    client.join('localhost:8080');
+    client.join(server.getIP()[0], '8080');
   });
 
+  /*
+   * Join Server
+   */
   $('.join-server').one('click', function(e) {
     $(this).addClass('disabled');
-    var $ipInput = $('<input>', {'class': 'input-serverip'})
+    var $ipInput = $('<input>', {'class': 'input-serverip', 'placeholder': 'Enter Server IP'})
     $ipInput.insertAfter('.join-server').focus();
 
     $ipInput.on('keypress', function(e) {
       if(e.which == 13) {
-        client.join(e.target.value);
+        var serverAddress = e.target.value.split(':');
+        client.join(serverAddress[0], serverAddress[1] ? serverAddress[1] : '8080');
       }
     });
   });
 
 };
-
-/**
- * Start App
- */
-app.init();
-
-

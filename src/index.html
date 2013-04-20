@@ -7,18 +7,22 @@
     <!-- BEGIN: Underscore Template Definition. -->
     <script type="text/template" class="template-chat">
       <ul class="messages"></ul>
-      <form class="messager">
+      <form class="messenger">
           <input placeholder="type in your message" />
       </form>
     </script>
     <!-- END: Underscore Template Definition. -->
+
   </head>
   <body>
     <h1>MyChat</h1>
     <section class="content">
-      <button type="button" class="join-server">Join Server</button>
+      <button type="button" class="join-server" placeholder="Server IP">Join Server</button>
       <button type="button" class="create-server">Create Server</button>
     </section>
     <script src="lib/app.js"></script>
+    <script>
+      app.init(); 
+    </script>
   </body>
 </html>

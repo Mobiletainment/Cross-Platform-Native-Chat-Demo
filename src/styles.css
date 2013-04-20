@@ -17,6 +17,9 @@ button[type=button]:active {
 button[type=button].disabled {
   color: #96ADAC;
 }
+button[type=button].disabled:active {
+  border: solid 1px #E8E8E8;
+}
 
 .input-serverip {
   width: 300px;
