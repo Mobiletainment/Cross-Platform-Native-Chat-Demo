@@ -4,8 +4,9 @@
 var _ = require('underscore');
 var async = require('async');
 var $ = require('jquery-browserify')
-var client = require('./lib/client.js');
-var server = require('./lib/server.js');
+var client = require('./lib/client');
+var server = require('./lib/server');
+var helper = require('./lib/helper');
 
 /**
  * Start app Object
@@ -22,7 +23,7 @@ app.init = function() {
    */
   $('.create-server').one('click', function(e) {
     server.start();  
-    client.join(server.getIP()[0], '8080');
+    client.join(helper.getIPs()[0], '8080');
   });
 
   /*

@@ -5,10 +5,10 @@ var _ = require('underscore');
 var async = require('async');
 var WebSocketServer = require('websocket').server;
 var http = require('http');
-var os = require('os');
+var DBStorage = require('./dbStorage');
 
 /**
- * Server.
+ * Expose 'Server'.
  */
 var server = module.exports;
 
@@ -35,8 +35,8 @@ server.start = function() {
     autoAcceptConnections: false
   });
 
-  // refill storage
-  server.storage = JSON.parse(window.localStorage.getItem('messages') || null);
+  // Create new Storage
+  var db = new DBStorage();
 
   var connectionIDCounter = 0;
 
@@ -54,14 +54,14 @@ server.start = function() {
     console.log((new Date()) + 'Server Connection ID ' + connection.id + ' accepted.');
 
     // Send chat history to client
-    server.sendData(connection, server.storage, 'history');
+    server.sendData(connection, db.storage, 'history');
 
     // On receiving a message from client
     connection.on('message', function(message) {
       if(message.type === 'utf8') {
         console.log('Server Received Message: ' + message.utf8Data);
-        server.newEntry(connection, message.utf8Data);
         server.broadcast(connection, message.utf8Data);
+        db.newChatEntry(connection.name, message.utf8Data);
       }
     });
 
@@ -125,46 +125,3 @@ server.sendToConnectionId = function(connectionID, fromConnection, msg) {
       });
   }
 };
-
-/*
- * Get Server IP
- */
-server.getIP = function() {
-  var interfaces = os.networkInterfaces();
-  var addresses = [];
-  for (k in interfaces) {
-      for (k2 in interfaces[k]) {
-          var address = interfaces[k][k2];
-          if (address.family == 'IPv4' && !address.internal) {
-              addresses.push(address.address)
-          }
-      }
-  }
-  return addresses;
-};
-
-
-/**
- * Storage for messages history
- */
-server.storage = null;
-
-/**
- * Adds new message entry to storage
- *
- * Saves data in form of:
- * {
- *    msg: 'String',
- *    name: 'String
- * }
- */
-server.newEntry = function(fromConnection, msg) {
-  server.storage || (server.storage = []);
-  server.storage.push({
-    msg: msg,
-    name: fromConnection.name
-  });
-  window.localStorage.setItem('messages', JSON.stringify(server.storage));
-}
-
-
