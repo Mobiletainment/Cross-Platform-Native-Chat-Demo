@@ -35,6 +35,9 @@ server.start = function() {
     autoAcceptConnections: false
   });
 
+  // refill storage
+  server.storage = JSON.parse(window.localStorage.getItem('messages') || null);
+
   var connectionIDCounter = 0;
 
   wsServer.on('request', function(request) {
@@ -45,17 +48,24 @@ server.start = function() {
     connection.id = connectionIDCounter++;
     // Give connection a name
     connection.name = 'guest';
+    // Give connection an ID
     server.connections[connection.id] = connection;
 
     console.log((new Date()) + 'Server Connection ID ' + connection.id + ' accepted.');
 
+    // Send chat history to client
+    server.sendData(connection, server.storage, 'history');
+
+    // On receiving a message from client
     connection.on('message', function(message) {
       if(message.type === 'utf8') {
         console.log('Server Received Message: ' + message.utf8Data);
-        server.broadcast(message.utf8Data);
+        server.newEntry(connection, message.utf8Data);
+        server.broadcast(connection, message.utf8Data);
       }
     });
 
+    // On client leaving the chat
     connection.on('close', function(reasonCode, description) {
       console.log((new Date()) + 'Server Peer ' + connection.remoteAddress + ' disconnected.');
 
@@ -67,6 +77,22 @@ server.start = function() {
 };
 
 /**
+ * Sends formated data to client
+ *
+ * Server sends data objects in format of:
+ * {
+ *    type: 'msg|history',
+ *    data: 'String|Array|Object' 
+ * }
+ */
+server.sendData = function(connection, data, type) {
+  connection.send(JSON.stringify({
+    type: type || 'msg',
+    data: data
+  }));
+};
+
+/**
  * Broadcast to all open connections
  *
  * Sends data objects in format of:
@@ -75,15 +101,14 @@ server.start = function() {
  *    name: 'String'
  * }
  */
-server.broadcast = function(data, excludeID) {
+server.broadcast = function(fromConnection, msg) {
   Object.keys(server.connections).forEach(function(key) {
     var connection = server.connections[key];
-    if (connection.connected && connection.id != excludeID) {
-      var msg = {
-        msg: data,
-        name: connection.name
-      }
-        connection.send(JSON.stringify(msg));
+    if (connection.connected) {
+        server.sendData(connection, {
+          msg: msg,
+          name: fromConnection.name
+        });
     }
   });
 };
@@ -91,10 +116,13 @@ server.broadcast = function(data, excludeID) {
 /**
  * Send message to a connection by its connectionID
  */
-server.sendToConnectionId = function(connectionID, data) {
+server.sendToConnectionId = function(connectionID, fromConnection, msg) {
   var connection = this.connections[connectionID];
   if (connection && connection.connected) {
-      connection.send(JSON.stringify(data));
+      server.sendData(connection, {
+        msg: msg,
+        name: fromConnection.name
+      });
   }
 };
 
@@ -114,5 +142,29 @@ server.getIP = function() {
   }
   return addresses;
 };
+
+
+/**
+ * Storage for messages history
+ */
+server.storage = null;
+
+/**
+ * Adds new message entry to storage
+ *
+ * Saves data in form of:
+ * {
+ *    msg: 'String',
+ *    name: 'String
+ * }
+ */
+server.newEntry = function(fromConnection, msg) {
+  server.storage || (server.storage = []);
+  server.storage.push({
+    msg: msg,
+    name: fromConnection.name
+  });
+  window.localStorage.setItem('messages', JSON.stringify(server.storage));
+}
 
 

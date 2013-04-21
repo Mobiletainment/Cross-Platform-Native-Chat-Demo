@@ -35,7 +35,12 @@ client.join = function(serverIP, port) {
   
   socket.onmessage = function(msgEvent) {  
     console.log('Client message received: ' + msgEvent.data)
-    client.newMessage(JSON.parse(msgEvent.data));
+    var data = JSON.parse(msgEvent.data);
+    if(data.type === 'msg') {
+      client.newMessage(data.data);
+    } else {
+      client.addChatHistory(data.data); 
+    }
   }; 
 
   socket.onerror = function(error) {
@@ -77,11 +82,21 @@ client.buildIU = function() {
  *    name: 'String'
  * }
  */
-client.newMessage = function(data) {
-  console.log(data);
+client.newMessage = function(data, isHistory) {
   // add message to UI
   var $msgItem = $('<li>', {'class': 'message', 'html': data.msg});
   var $nameItem = $('<span>', {'class': 'message-name', 'html': data.name});
+  if(isHistory) {
+    $msgItem.addClass('history');
+  }
   $('.messages').append($msgItem.prepend($nameItem));
 };
 
+/**
+ * Build chat server history
+ */
+client.addChatHistory = function(msgs) {
+  for(msg in msgs) {
+    client.newMessage(msgs[msg], true);
+  }
+}
