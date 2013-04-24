@@ -1,1 +1,1 @@
-./runtime/node-webkit.app/Contents/MacOS/node-webkit "app/"
+./runtime/CPA-Chat.app/Contents/MacOS/node-webkit "app/"
