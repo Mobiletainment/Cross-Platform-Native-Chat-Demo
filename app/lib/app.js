@@ -20,6 +20,7 @@ app.init = function() {
 
   /*
    * Start Server
+   * .one() prevents starting multiple servers
    */
   $('.create-server').one('click', function(e) {
     server.start();  
