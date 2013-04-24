@@ -17,7 +17,7 @@ client.server = {};
 
 /**
  * Join Socketserver 
- * @Infos: 
+ * @See: 
  * https://developer.mozilla.org/en-US/docs/WebSockets/WebSockets_reference/WebSocket#Ready_state_constants
  */
 client.join = function(serverIP, port) {
@@ -29,7 +29,7 @@ client.join = function(serverIP, port) {
   this.server.socket = socket;
 
   socket.onopen = function() {  
-    client.buildIU();
+    client.buildUI();
     console.log('Client Socket Status: ' + socket.readyState + '(open)');
   }; 
   
@@ -61,9 +61,9 @@ client.join = function(serverIP, port) {
 /**
  * Building Chat UI
  */
-client.buildIU = function() {
+client.buildUI = function() {
 
-  // add server ip
+  // display the server ip and port we're connected to
   var $serverIP = $('<span>', {'class': 'server-ip', 'html': this.server.ip + ':' + this.server.port});
   $('h1').append($serverIP);
 

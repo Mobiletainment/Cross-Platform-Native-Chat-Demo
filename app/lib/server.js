@@ -35,7 +35,7 @@ server.start = function() {
     autoAcceptConnections: false
   });
 
-  // Create new Storage
+  // DBStorage is used to save and restore chat history
   var db = new DBStorage();
 
   var connectionIDCounter = 0;
