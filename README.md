@@ -1,4 +1,4 @@
-Cross-Platform-Web-App
+Cross-Platform-Native-Chat-Demo
 ======================
 
 What is it?
@@ -19,7 +19,7 @@ How to build?
  2. Start app
     * ```npm start```
  3. Build package:
-    * ```npm run-script package```
+    * ```make```
 
 References:
 ------------
