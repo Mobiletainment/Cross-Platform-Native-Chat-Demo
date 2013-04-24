@@ -38,7 +38,7 @@
 	<key>CFBundleExecutable</key>
 	<string>node-webkit</string>
 	<key>CFBundleIconFile</key>
-	<string>app.icns</string>
+	<string>nw.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.intel.nw</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -48,9 +48,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>27.0.1430.0</string>
+	<string>26.0.1377.0</string>
 	<key>CFBundleVersion</key>
-	<string>1430.0</string>
+	<string>1377.0</string>
 	<key>LSFileQuarantineEnabled</key>
 	<true/>
 	<key>LSMinimumSystemVersion</key>
@@ -60,7 +60,7 @@
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<true/>
 	<key>SCMRevision</key>
-	<string>186115</string>
+	<string>175484</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

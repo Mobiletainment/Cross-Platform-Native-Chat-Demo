@@ -1,6 +1,6 @@
 
 build:
-	zip -r app.nw app/*
+	cd app; npm run-script package	
 	mv -f app.nw ./runtime/CPA-Chat.app/Contents/Resources/app.nw
 
 clean:
