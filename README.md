@@ -4,18 +4,18 @@ Cross-Platform-Web-App
 A cross platform Web Application
 
 Als Socket Wrapper:
-=>https://github.com/Worlize/WebSocket-Node
-https://github.com/bodokaiser/node-websockets
-http://socket.io
+- =>https://github.com/Worlize/WebSocket-Node
+- https://github.com/bodokaiser/node-websockets
+- http://socket.io
 
 Install:
-`cd app`
-`npm install`
+```cd app```
+```npm install```
 Start app:
-`npm start`
+```npm start```
 Build package:
-'npm run-script package'
+```npm run-script package```
 
 Sources:
-[Javascript on Desktop](http://de.slideshare.net/domenicdenicola/javascript-on-the-desktop "Javascript on the desktop")
-[Websockets](http://lucumr.pocoo.org/2012/9/24/websockets-101/ "Websockets 101")
+- [Javascript on Desktop](http://de.slideshare.net/domenicdenicola/javascript-on-the-desktop "Javascript on the desktop")
+- [Websockets](http://lucumr.pocoo.org/2012/9/24/websockets-101/ "Websockets 101")
