@@ -2,3 +2,5 @@ node_modules
 components
 build
 .DS_Store
+*.log
+app.nw

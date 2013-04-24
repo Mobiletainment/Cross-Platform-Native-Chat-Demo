@@ -8,6 +8,10 @@
     "height": 500,
     "position": "mouse"
   },
+  "scripts": {
+    "start": "../runtime/cpa-chat.app/Contents/MacOS/node-webkit app",
+    "package": "zip -r ../${PWD##*/}.nw *"
+  },
   "dependencies": {
     "async": "~0.2.7",
     "underscore": "~1.4.4",

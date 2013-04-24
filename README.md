@@ -9,7 +9,12 @@ https://github.com/bodokaiser/node-websockets
 http://socket.io
 
 Install:
+`cd app`
 `npm install`
+Start app:
+`npm start`
+Build package:
+'npm run-script package'
 
 Sources:
 [Javascript on Desktop](http://de.slideshare.net/domenicdenicola/javascript-on-the-desktop "Javascript on the desktop")

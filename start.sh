@@ -1,1 +1,0 @@
-./runtime/CPA-Chat.app/Contents/MacOS/node-webkit "app/"
