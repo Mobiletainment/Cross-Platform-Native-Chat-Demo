@@ -10,7 +10,6 @@ exports = module.exports = DBStorage;
 
 /**
  * Initialize a new 'Storage'
- * using node-webkit's localStorage, we can store data with no expiration date
  */
 function DBStorage() {
   this.storage = JSON.parse(window.localStorage.getItem('messages') || null);
@@ -32,7 +31,10 @@ DBStorage.prototype.storage = null;
  */
 DBStorage.prototype.newChatEntry = function(data) {
   this.storage || (this.storage = []);
-  this.storage.push(data);
+  this.storage.push({
+    msg: data.msg,
+    name: data.name
+  });
   window.localStorage.setItem('messages', JSON.stringify(this.storage));
 }
 
