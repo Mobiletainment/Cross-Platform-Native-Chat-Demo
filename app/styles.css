@@ -1,4 +1,7 @@
 
+/**
+ * Fonts
+ */
 @font-face {
 	font-family: MozTT;
 	src: url('fonts/MozTT-Light.ttf');
@@ -20,15 +23,49 @@
   font-weight: bolder;
 }
 
+/**
+ * Layout
+ */
+
 * { 
   font-family: MozTT;
-  -webkit-box-sizing: border-box; 
   box-sizing: border-box;
 }
 
-h1 {
-  font-weight: lighter;
+html, body { height: 100% }
+body { margin: 0 }
+
+header.top {
+  height: 15%;
+  max-height: 100px;
+  overflow: hidden;
 }
+  header.top h1 {
+    font-weight: lighter;
+    text-align: center;
+  }
+  .server-ip {
+    display: block;
+    font-size: 12px;
+  }
+
+section.content {
+  height: 85%;
+  overflow: hidden;
+}
+
+ul.messages {
+  height: 90%;
+  margin: 0;
+  overflow: auto;
+}
+form.messenger {
+  height: 10%;
+}
+
+/**
+ * Components
+ */
 
 button[type=button] {
   width: 200px;
@@ -62,9 +99,29 @@ button[type=button].disabled:active {
   font-family: 'courier';
 }
 
-.messages {
-  width: 100%;
+ul.messages {
+  background-color: #3f3f3f;
+  border-top: solid 1px #3f3f3f;
+  border-bottom: solid 1px #3f3f3f;
+  padding: 10px 30px;
+} 
+  li.message {
+    list-style: none;
+    color: #fff;
+  }
+  li.message span {
+    color: #c6c6c6 !important;
+    margin: 0 5px 0 0;
+  }
+  li.message span:after {
+    content: ':';
+  }
+
+form.messenger input {
   height: 100%;
-  border-radius: 3px;
-  border: solid 1px #96ADAC;
+  width: 100%;
+  outline: none;
+  border: none;
+  font-size: 15px;
+  padding: 0 10px;
 }

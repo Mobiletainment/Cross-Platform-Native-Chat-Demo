@@ -36,8 +36,13 @@ client.join = function(serverIP, port) {
   socket.onmessage = function(msgEvent) {  
     console.log('Client message received: ' + msgEvent.data)
     var data = JSON.parse(msgEvent.data);
+    console.log(data.data);
     if(data.type === 'msg') {
       client.newMessage(data.data);
+    } else  if(data.type === 'name') {
+      $('[data-id='+data.data.id+']').find('span').text(data.data.name);
+    } else  if(data.type === 'color') {
+      $('[data-id='+data.data.id+']').css('color', data.data.color);
     } else {
       client.addChatHistory(data.data); 
     }
@@ -59,15 +64,33 @@ client.join = function(serverIP, port) {
 client.buildIU = function() {
 
   // add server ip
-  var $serverIP = $('<span>', {'class': 'serverip', 'html': this.server.ip + ':' + this.server.port});
-  $('h1').after($serverIP);
+  var $serverIP = $('<span>', {'class': 'server-ip', 'html': this.server.ip + ':' + this.server.port});
+  $('h1').append($serverIP);
 
   var chatTemplate = _.template($('script.template-chat').html());
   $('.content').html(chatTemplate);
 
-  $('.messenger input').on('keypress', function(e) {
+  $('.messenger input').focus().on('keypress', function(e) {
     if(e.which == 13) {
-      client.server.socket.send($(this).val());
+      var value = $(this).val();
+      var command = value.split(' ')[0];
+      var commandValue = value.split(' ')[1];
+
+      var msg = {
+        type: 'msg',
+        data: value
+      };
+
+      if(command === ':name') {
+          msg.type = 'name';
+          msg.data = commandValue;
+      } else if(command === ':color') {
+          msg.type = 'color';
+          msg.data = commandValue;
+      } 
+
+      client.server.socket.send(JSON.stringify(msg));
+      $(this).val('');
       e.preventDefault();
     }
   });
@@ -86,10 +109,15 @@ client.newMessage = function(data, isHistory) {
   // add message to UI
   var $msgItem = $('<li>', {'class': 'message', 'html': data.msg});
   var $nameItem = $('<span>', {'class': 'message-name', 'html': data.name});
+  var $messages = $('.messages');
   if(isHistory) {
     $msgItem.addClass('history');
+  } else {
+    $msgItem.attr('data-id', data.id);
+    $msgItem.css('color', data.color)
   }
-  $('.messages').append($msgItem.prepend($nameItem));
+  $messages.append($msgItem.prepend($nameItem));
+  $messages.scrollTop($messages[0].scrollHeight);
 };
 
 /**

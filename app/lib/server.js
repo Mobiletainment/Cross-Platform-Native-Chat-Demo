@@ -45,9 +45,11 @@ server.start = function() {
     var connection = request.accept(null, request.origin);
 
     // Store a reference to the connection using a connection ID
-    connection.id = connectionIDCounter++;
+    connection.id = ++connectionIDCounter
     // Give connection a name
     connection.name = 'guest';
+    // Give connection a color
+    connection.color = 'inherit';
     // Give connection an ID
     server.connections[connection.id] = connection;
 
@@ -56,12 +58,36 @@ server.start = function() {
     // Send chat history to client
     server.sendData(connection, db.storage, 'history');
 
-    // On receiving a message from client
+    /*
+     * On receiving a message from client
+     * Format:
+     * {
+     *  type: 'String',
+     *  data: 'String'
+     * }
+     */
     connection.on('message', function(message) {
       if(message.type === 'utf8') {
-        console.log('Server Received Message: ' + message.utf8Data);
-        server.broadcast(connection, message.utf8Data);
-        db.newChatEntry(connection.name, message.utf8Data);
+        msg = JSON.parse(message.utf8Data);
+        console.log('Server Received Message: ' + msg.type);
+        var data = {
+          msg: msg.data,
+          name: connection.name,
+          color: connection.color,
+          id: connection.id
+        };
+        if(msg.type === 'color') {
+          connection.color = msg.data;
+          data.color = msg.data;
+          server.broadcast(data, 'color');
+        } else if(msg.type === 'name') {
+          connection.name = msg.data;
+          data.name = msg.data;
+          server.broadcast(data, 'name');
+        } else {
+          server.broadcast(data);
+          db.newChatEntry(connection.name, msg.data);
+        } 
       }
     });
 
@@ -101,14 +127,11 @@ server.sendData = function(connection, data, type) {
  *    name: 'String'
  * }
  */
-server.broadcast = function(fromConnection, msg) {
+server.broadcast = function(data, type) {
   Object.keys(server.connections).forEach(function(key) {
     var connection = server.connections[key];
     if (connection.connected) {
-        server.sendData(connection, {
-          msg: msg,
-          name: fromConnection.name
-        });
+        server.sendData(connection, data, type);
     }
   });
 };
