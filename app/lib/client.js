@@ -36,7 +36,6 @@ client.join = function(serverIP, port) {
   socket.onmessage = function(msgEvent) {  
     console.log('Client message received: ' + msgEvent.data)
     var data = JSON.parse(msgEvent.data);
-    console.log(data.data);
     if(data.type === 'msg') {
       client.newMessage(data.data);
     } else  if(data.type === 'name') {
@@ -124,6 +123,7 @@ client.newMessage = function(data, isHistory) {
  * Build chat server history
  */
 client.addChatHistory = function(msgs) {
+  console.log(msgs);
   for(msg in msgs) {
     client.newMessage(msgs[msg], true);
   }

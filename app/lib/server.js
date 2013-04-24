@@ -49,7 +49,7 @@ server.start = function() {
     // Give connection a name
     connection.name = 'guest';
     // Give connection a color
-    connection.color = 'inherit';
+    connection.color = 'white';
     // Give connection an ID
     server.connections[connection.id] = connection;
 
@@ -86,7 +86,7 @@ server.start = function() {
           server.broadcast(data, 'name');
         } else {
           server.broadcast(data);
-          db.newChatEntry(connection.name, msg.data);
+          db.newChatEntry(data);
         } 
       }
     });

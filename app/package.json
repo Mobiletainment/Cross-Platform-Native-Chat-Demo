@@ -3,13 +3,13 @@
   "version": "0.0.1",
   "main": "index.html",
   "window": {
-    "toolbar": false,
+    "toolbar": true,
     "width": 800,
-    "height": 500,
+    "height": 600,
     "position": "mouse"
   },
   "scripts": {
-    "start": "../runtime/cpa-chat.app/Contents/MacOS/node-webkit app",
+    "start": "rm -rf ../runtime/cpa-chat.app/Contents/Resources/app.nw; ../runtime/cpa-chat.app/Contents/MacOS/node-webkit ../app",
     "package": "zip -r ../${PWD##*/}.nw *"
   },
   "dependencies": {

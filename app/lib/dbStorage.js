@@ -29,12 +29,9 @@ DBStorage.prototype.storage = null;
  *    name: 'String
  * }
  */
-DBStorage.prototype.newChatEntry = function(name, msg) {
+DBStorage.prototype.newChatEntry = function(data) {
   this.storage || (this.storage = []);
-  this.storage.push({
-    msg: msg,
-    name: name
-  });
+  this.storage.push(data);
   window.localStorage.setItem('messages', JSON.stringify(this.storage));
 }
 

@@ -109,8 +109,11 @@ ul.messages {
     list-style: none;
     color: #fff;
   }
+  li.message.history, li.message.history span {
+    color: #676767;
+  }
   li.message span {
-    color: #c6c6c6 !important;
+    color: #c6c6c6;
     margin: 0 5px 0 0;
   }
   li.message span:after {
