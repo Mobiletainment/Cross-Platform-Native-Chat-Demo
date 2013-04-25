@@ -49,7 +49,7 @@ server.start = function() {
     // Give connection a name
     connection.name = 'guest';
     // Give connection a color
-    connection.color = 'white';
+    connection.color = '#d5d5d5';
     // Give connection an ID
     server.connections[connection.id] = connection;
 
@@ -74,7 +74,7 @@ server.start = function() {
           msg: msg.data,
           name: connection.name,
           color: connection.color,
-          id: connection.id
+          id: connection.id,
         };
         if(msg.type === 'color') {
           connection.color = msg.data;
@@ -84,6 +84,8 @@ server.start = function() {
           connection.name = msg.data;
           data.name = msg.data;
           server.broadcast(data, 'name');
+        } else if(msg.type === 'single') {
+          server.sendToConnectionId(msg.receiver, data);
         } else {
           server.broadcast(data);
           db.newChatEntry(data);
@@ -139,12 +141,9 @@ server.broadcast = function(data, type) {
 /**
  * Send message to a connection by its connectionID
  */
-server.sendToConnectionId = function(connectionID, fromConnection, msg) {
+server.sendToConnectionId = function(connectionID, data) {
   var connection = this.connections[connectionID];
   if (connection && connection.connected) {
-      server.sendData(connection, {
-        msg: msg,
-        name: fromConnection.name
-      });
+      server.sendData(connection, data);
   }
 };

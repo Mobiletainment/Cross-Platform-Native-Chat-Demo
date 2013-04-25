@@ -39,9 +39,13 @@ client.join = function(serverIP, port) {
     if(data.type === 'msg') {
       client.newMessage(data.data);
     } else  if(data.type === 'name') {
-      $('[data-id='+data.data.id+']').find('span').text(data.data.name);
+      $el = $('[data-id='+data.data.id+']'); 
+      $el.find('span').text(data.data.name);
+      $el.attr('data-model', JSON.stringify(data.data));
     } else  if(data.type === 'color') {
-      $('[data-id='+data.data.id+']').css('color', data.data.color);
+      $el = $('[data-id='+data.data.id+']'); 
+      $el.find('span').css('color', data.data.color);
+      $el.attr('data-model', JSON.stringify(data.data));
     } else {
       client.addChatHistory(data.data); 
     }
@@ -86,12 +90,27 @@ client.buildUI = function() {
       } else if(command === ':color') {
           msg.type = 'color';
           msg.data = commandValue;
-      } 
+      } else if(client.singleMessage) {
+        msg.type = 'single';
+        msg.receiver = client.singleMessage.id;
+        client.singleMessage = false;
+      }
 
       client.server.socket.send(JSON.stringify(msg));
       $(this).val('');
+      $(this).attr('placeholder', 'type in your message');
+      $(this).parent().css('border', 'none');
       e.preventDefault();
     }
+  });
+
+  $('.message-name').live('click', function() {
+    if($(this).parent().hasClass('history')) return null;
+    var $el = $('.messenger');
+    var data = $(this).parent().data('model');
+    client.singleMessage = data;
+    $el.css('border', 'solid 4px '+data.color);
+    $el.find('input').attr('placeholder', 'message to '+data.name+' :').focus();
   });
 };
 
@@ -113,7 +132,8 @@ client.newMessage = function(data, isHistory) {
     $msgItem.addClass('history');
   } else {
     $msgItem.attr('data-id', data.id);
-    $msgItem.css('color', data.color)
+    $msgItem.attr('data-model', JSON.stringify(data));
+    $nameItem.css('color', data.color)
   }
   $messages.append($msgItem.prepend($nameItem));
   $messages.scrollTop($messages[0].scrollHeight);
